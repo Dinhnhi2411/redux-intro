@@ -8,13 +8,13 @@ import { Container, Button, Typography, Box, Grid } from "@mui/material"
 const RootComponent = (props) => {
   // eslint-disable-next-line
   const [products, setProducts] = useState([
-    { id: "p1", title: "Product 1", price: 1999 },
-    { id: "p2", title: "Product 2", price: 999 },
+    { id:"p1", title: "Product 1", price: 1999 },
+    { id:"p2", title: "Product 2", price: 999 },
   ]);
   const [cart, setCart] = useState({
     products: [
-      { id: "p1", title: "Product 1", price: 0, qty: 0 },
-      { id: "p2", title: "Product 2", price: 0, qty: 0 },
+      { id:"p1", title: "Product 1", price: 0, qty: 0 },
+      { id:"p2", title: "Product 2", price: 0, qty: 0 },
     ],
     totalPrice: 0,
   });

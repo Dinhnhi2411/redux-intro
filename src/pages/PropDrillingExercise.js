@@ -29,16 +29,40 @@ const RootComponent = (props) => {
   // Example newProduct = { id: "p1", title: "Product 1", price: 1999 }
   // The function will add one new product into the cart
 
+  const addProductToCart = (item) => {
+    const newProductList = cart.products.map((cartNew) => {
+      if (cartNew.id === item.id) {
+      cartNew.qty += 1;
+      cartNew.price += item.price;
+      }
+      return cartNew;
+    });
+    const newTotalPrice = cart.totalPrice + item.price;
+    setCart({ products: newProductList, totalPrice:newTotalPrice });
+  };
 
+ 
   // Step 2
   // Write a function called removeProductFromCart() that takes a product object as an argument
   // Example removedProduct = { id: "p1", title: "Product 1", price: 1999 }
   // The function will remove one product from the cart. The min value of quantity is 0
-
+  const removeProductFromCart = (item) => {
+    let newTotalPrice = cart.totalPrice;
+    const newProductList = cart.products.map((cartNew) => {
+      if (cartNew.id === item.id && cartNew.qty > 0) {
+        cartNew.qty -= 1;
+        cartNew.price -= item.price;
+        newTotalPrice -= item.price;
+      }
+      return cartNew;
+    });
+    setCart({ products: newProductList, totalPrice: newTotalPrice });
+  };
   // Step 3
   // Pass the functions to the product components to handle the click event of the Add/Remove buttons
 
   return (
+ 
     <WrapperBox>
       <Typography p="0.5rem" variant="h5" sx={{ backgroundColor: "primary.main", color: "primary.contrastText" }}>
         RootComponent {`({`}
@@ -57,7 +81,12 @@ const RootComponent = (props) => {
       </Box>
       <Grid container spacing={2} p="1rem">
         <Grid item md={6}>
-          <ProductPage products={products} />
+          <ProductPage 
+          products={products}
+          addProduct = {addProductToCart}
+          removeProduct = {removeProductFromCart}
+
+           />
         </Grid>
         <Grid item md={6}>
           <CartPage cart={cart} />
@@ -78,10 +107,18 @@ const ProductPage = (props) => {
       </Typography>
       <Grid container spacing={2} p="1rem">
         <Grid item sm={6}>
-          <ProductOne product={props.products[0]} />
+          <ProductOne 
+          product={props.products[0]} 
+          addProduct = {props.addProduct}
+          removeProduct = {props.removeProduct}
+          />
         </Grid>
         <Grid item sm={6}>
-          <ProductTwo product={props.products[1]} />
+          <ProductTwo 
+          product={props.products[1]} 
+          addProduct = {props.addProduct}
+          removeProduct = {props.removeProduct}
+          />
         </Grid>
       </Grid>
     </WrapperBox>
@@ -126,10 +163,18 @@ const ProductOne = (props) => {
         </Grid>
         <Grid item xs={8} >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button variant="success" sx={{ width: "5rem" }} >
+            <Button 
+            variant="success" 
+            sx={{ width: "5rem" }} 
+            onClick = {()=> props.addProduct(props.product)}
+            >
               Add
             </Button>
-            <Button variant="error" sx={{ width: "5rem" }}>
+            <Button 
+            variant="error" 
+            sx={{ width: "5rem" }}
+            onClick = {()=> props.removeProduct(props.product)}
+            >
               Remove
             </Button>
           </div>
@@ -155,10 +200,20 @@ const ProductTwo = (props) => {
         </Grid>
         <Grid item xs={8} >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <Button variant="success" size="sm" style={{ width: "5rem" }}>
+            <Button
+             variant="success" 
+             size="sm" 
+             style={{ width: "5rem" }}
+             onClick={()=> props.addProduct(props.product)}
+             >
               Add
             </Button>
-            <Button variant="error" size="sm" style={{ width: "5rem" }}>
+            <Button 
+            variant="error" 
+            size="sm" 
+            style={{ width: "5rem" }}
+            onClick={()=> props.removeProduct(props.product)}
+            >
               Remove
             </Button>
           </div>
